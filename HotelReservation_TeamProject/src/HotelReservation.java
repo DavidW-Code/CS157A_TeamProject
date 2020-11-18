@@ -7,7 +7,7 @@ import java.sql.Statement;
 public class HotelReservation {
 static final String DB_URL = "jdbc:mysql://localhost/HotelReservation?serverTimezone=UTC";
 static final String USER = "root";
-static final String PASS = "tofuhead";
+static final String PASS = "ENTER PASSWORD HERE";
 
 Connection conn = null;
 Statement stmt = null;
