@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class HotelReservationTester {
 HotelReservation hotel;
 String selection;
+
 	public HotelReservationTester() throws SQLException {
 		hotel = new HotelReservation();
 		Scanner input = new Scanner (System.in);
@@ -14,16 +15,34 @@ String selection;
 		selection = input.nextLine();
 		while (!selection.equals("Quit")) {
 			
+			if (selection.equals("Archive")) {
+				System.out.println("Enter cut off date");
+				String cutDate = input.nextLine();
+				hotel.archive(cutDate);
+			}
+			
 			//Create a Reservation
-			if (selection.equals("Reserve")) {
-				System.out.println("Enter Guest Name");
-				String guestName = input.nextLine();
-				System.out.println("Enter Size of Party");
-				int partySize = input.nextInt();
+			else if (selection.equals("Reserve")) {
 				System.out.println("Enter Starting Date of Stay (i.e yyyy-mm-dd)");
 				String startDate = input.nextLine();
+				
 				System.out.println("Enter Ending Date of Stay (i.e yyyy-mm-dd)");
 				String endDate = input.nextLine();
+				
+				System.out.println("Enter Guest Name");
+				String guestName = input.nextLine();
+				
+				System.out.println("Enter Size of Party");
+				int partySize = input.nextInt();
+				
+				System.out.println("Select a room number");
+				hotel.getAvailableRooms();
+				int roomID = input.nextInt();
+				
+				System.out.println("Enter paymentID information");
+				int paymentID = input.nextInt();
+				
+				hotel.reserveRoom(guestName, partySize, roomID, startDate, endDate, paymentID);
 				
 			}
 			
@@ -34,31 +53,55 @@ String selection;
 			
 			//Get Guest Information
 			else if (selection.equals("Guest Info")) {
-				System.out.println("Enter Guest ID");
-				String guestID = input.nextLine();
-				
+				System.out.println("Enter guestID");
+				int guestID = input.nextInt();
 				hotel.getGuestInfo(guestID);
 			}
 			
 			//Find Available Rooms
 			else if (selection.equals("Find")) {
-				System.out.println("[All] Rooms or Specific Room [Type]?");
-				selection = input.nextLine();
-				
-				String roomType = "";
-				boolean all = false;
-				if (selection.equals("All")) {
-					all = true;
-				}
-				else {
-					all = false;
-					System.out.println("Enter Room Type ('King' / 'Queen' / 'Suite' )");
-					roomType = input.nextLine();
-				}
-				
-				hotel.getAvailableRooms(roomType,all);
+				hotel.getAvailableRooms();
 			}
 			
+			else if (selection.equals("Cost")){
+				hotel.getRoomCost();
+			}
+			
+			else if (selection.equals("Extend")) {
+				System.out.println("Enter new check out date");
+				String checkoutDate = input.nextLine();
+				System.out.println("Enter reservationID");
+				int reservationID = input.nextInt();
+				hotel.extendReservation(checkoutDate, reservationID);
+			}
+			
+			else if (selection.equals("Room Info")) {
+				System.out.println("Enter roomID");
+				int roomID = input.nextInt();
+				hotel.getRoomInfo(roomID);
+			}
+			
+			else if (selection.equals("Member Discount")) {
+				System.out.println("Enter guestID");
+				int guestID = input.nextInt();
+				hotel.applyDiscount(guestID);
+			}
+			
+			else if (selection.equals("Update")) {
+				System.out.println("Enter new name");
+				String name = input.nextLine();
+				System.out.println("Enter new party size");
+				int partySize = input.nextInt();
+				System.out.println("Enter guestID");
+				int guestID = input.nextInt();
+				hotel.updateGuest(guestID, name, partySize);
+			}
+			
+			else if (selection.equals("Amenaties")) {
+				System.out.println("Enter guestID");
+				int guestID = input.nextInt();
+				hotel.addAmenaties(guestID);
+			}
 			
 			System.out.println("");
 			printMenu();
@@ -75,14 +118,21 @@ String selection;
 	public void printMenu() {
 		System.out.println("---------MENU---------");
 		System.out.println("Guest Requests");
-		System.out.println("[Reserve] a room");
-		
+		System.out.println("[Reserve] Create a reservation");
+		System.out.println("[Cost] Gives costs of all room types");
+		System.out.println("[Extend] Extends current reservation");
+		System.out.println("[Room Info] Gives information about particular room");
+		System.out.println("[Update] Updates guest information");
+		System.out.println("[Amenaties] Adds amentaties to guest room");
+
 		System.out.println("");
 		
 		System.out.println("Admin Requests");
-		System.out.println("[Reservation List] list of all current reservations");
-		System.out.println("[Guest Info] guest information");
-		System.out.println("[Find] find number of empty rooms");
+		System.out.println("[Archive] Archives payment information");
+		System.out.println("[Reservation List] Gets a list of all reservations");
+		System.out.println("[Guest Info] Gets information about particular guest");
+		System.out.println("[Find] Gets avilable rooms");
+		System.out.println("[Member Discount] Applies 15% discount to total cost");
 		
 		System.out.println("");
 		
