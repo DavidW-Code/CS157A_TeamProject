@@ -195,5 +195,50 @@ String query;
 		}
 	}
 	
+	public void getPartySize(int partySize) throws SQLException {
+		call = conn.prepareCall("{call getPartySize(?)}");
+		call.setInt(1, partySize);
+		call.execute();
+		ResultSet rs = call.getResultSet();
+		
+		while(rs.next()){
+			System.out.println("Name: " + rs.getString("name") + " ReservationID: " + rs.getString("reservationID")
+								+ " Party Size: " + rs.getInt("party_size"));
+		}
+	}
 	
+	public void getExpensive() throws SQLException {
+		call = conn.prepareCall("{call mostExpensive()}");
+		call.execute();
+		ResultSet rs = call.getResultSet();
+		
+		while(rs.next()){
+			System.out.println("RoomID: " + rs.getString("roomID") + "Room Type: " + rs.getString("room_type") 
+								+ " Cost: " + rs.getInt("cost"));
+		}
+	}
+	
+	public void leastExpensive() throws SQLException {
+        call = conn.prepareCall("{call leastExpensive()}");
+        call.execute();
+        ResultSet rs = call.getResultSet();
+
+        while (rs.next()){
+            System.out.println("RoomID: " + rs.getString("roomID") + " Room Type " + rs.getString("room_type") 
+							+ " Cost: " + rs.getInt("cost"));
+        }
+        
+    }
+
+    public void wifiAndBreakfast() throws SQLException {
+        call = conn.prepareCall("{call wifiAndBreakfast()}");
+        call.execute();
+        ResultSet rs = call.getResultSet();
+
+        while (rs.next()){
+            System.out.println("Room ID: " + rs.getInt("roomID") + " Room Type " + rs.getString("room_type") 
+            				+ " WIFI: " + roomCheck(rs.getInt("wifi")) + " Breakfast: " + roomCheck(rs.getInt("breakfast")));
+        }
+    }
+        
 }
